@@ -33,6 +33,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.onrender.com',
     'https://*.pythonanywhere.com',
     'https://*.koyeb.app',
+    'https://*.vercel.app',
+    'http://*.vercel.app',
     'http://127.0.0.1:8000',
     'http://localhost:8000',
 ]
@@ -89,10 +91,24 @@ WSGI_APPLICATION = 'CookingRecipess.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+IS_VERCEL = 'VERCEL' in os.environ
+if IS_VERCEL:
+    import shutil
+    tmp_db = '/tmp/db.sqlite3'
+    orig_db = os.path.join(BASE_DIR, 'db.sqlite3')
+    if os.path.exists(orig_db) and not os.path.exists(tmp_db):
+        try:
+            shutil.copy2(orig_db, tmp_db)
+        except Exception:
+            pass
+    db_path = tmp_db
+else:
+    db_path = os.path.join(BASE_DIR, 'db.sqlite3')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': db_path,
     }
 }
 

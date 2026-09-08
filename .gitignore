@@ -8,8 +8,6 @@ __pycache__/
 venv/
 ENV/
 
-# Static collection for build
-staticfiles/
 
 # Large datasets exceeding GitHub 100MB limit
 media/*.csv
