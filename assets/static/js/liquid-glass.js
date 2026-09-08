@@ -136,3 +136,88 @@
     init();
   }
 })();
+
+/* --------------------------------------------------------------------------
+   INTERACTIVE DELIVERY TRUCK DEMO MODAL CONTROLLER
+   -------------------------------------------------------------------------- */
+var truckAnimationTimer = null;
+var truckAnimationSpeed = 1; // 1 = normal, 0.5 = slow motion
+
+function openTruckDemoModal() {
+  var modal = document.getElementById('truckDemoModal');
+  if (!modal) return;
+  
+  if (window.jQuery && typeof window.jQuery(modal).modal === 'function') {
+    window.jQuery(modal).modal('show');
+  } else {
+    modal.classList.add('show');
+    modal.style.display = 'block';
+    document.body.classList.add('modal-open');
+  }
+}
+
+function closeTruckDemoModal() {
+  var modal = document.getElementById('truckDemoModal');
+  if (!modal) return;
+  if (window.jQuery && typeof window.jQuery(modal).modal === 'function') {
+    window.jQuery(modal).modal('hide');
+  } else {
+    modal.classList.remove('show');
+    modal.style.display = 'none';
+    document.body.classList.remove('modal-open');
+  }
+}
+
+function triggerTruckOrderAnimation() {
+  var btn = document.getElementById('truckOrderBtn');
+  if (!btn || btn.classList.contains('is-animating') || btn.classList.contains('is-completed')) return;
+
+  if (truckAnimationTimer) clearTimeout(truckAnimationTimer);
+
+  btn.classList.remove('is-completed');
+  btn.classList.add('is-animating');
+
+  var duration = 2400 / truckAnimationSpeed;
+
+  truckAnimationTimer = setTimeout(function () {
+    btn.classList.remove('is-animating');
+    btn.classList.add('is-completed');
+  }, duration);
+}
+
+function resetTruckOrderAnimation() {
+  var btn = document.getElementById('truckOrderBtn');
+  if (!btn) return;
+  if (truckAnimationTimer) clearTimeout(truckAnimationTimer);
+
+  btn.classList.remove('is-animating', 'is-completed');
+  
+  setTimeout(function () {
+    triggerTruckOrderAnimation();
+  }, 100);
+}
+
+function toggleTruckSpeed() {
+  var btn = document.getElementById('truckOrderBtn');
+  var indicator = document.getElementById('speedIndicator');
+  if (!btn) return;
+
+  if (truckAnimationSpeed === 1) {
+    truckAnimationSpeed = 0.5;
+    btn.style.setProperty('--anim-speed', '0.5');
+    if (indicator) indicator.textContent = '🐢 Slow Motion (0.5x)';
+  } else {
+    truckAnimationSpeed = 1;
+    btn.style.setProperty('--anim-speed', '1');
+    if (indicator) indicator.textContent = '⚡ Normal Speed (1x)';
+  }
+
+  resetTruckOrderAnimation();
+}
+
+window.openTruckDemoModal = openTruckDemoModal;
+window.closeTruckDemoModal = closeTruckDemoModal;
+window.triggerTruckOrderAnimation = triggerTruckOrderAnimation;
+window.resetTruckOrderAnimation = resetTruckOrderAnimation;
+window.toggleTruckSpeed = toggleTruckSpeed;
+

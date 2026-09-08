@@ -1,0 +1,177 @@
+{% load static %}
+<!-- Interactive Delivery Truck Order Demo Modal (Inspired by Hasibul Hasan @_code_and_chill_ / Aaron Iker) -->
+<div class="modal fade lg-truck-modal" id="truckDemoModal" tabindex="-1" role="dialog" aria-labelledby="truckDemoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content lg-truck-modal-content">
+      
+      <!-- Modal Header -->
+      <div class="modal-header lg-truck-modal-header">
+        <div class="lg-truck-modal-title-wrap">
+          <span class="lg-truck-badge">
+            <span class="lg-pulse-dot"></span> Viral UI Micro-Interaction
+          </span>
+          <h4 class="modal-title lg-truck-modal-title" id="truckDemoModalLabel">
+            Delivery Truck Button Animation
+          </h4>
+          <p class="lg-truck-modal-sub">
+            Analysis & Interactive Recreation of <a href="https://www.instagram.com/reels/Db_bxUZvz2n/" target="_blank" rel="noopener noreferrer">@_code_and_chill_</a> & Aaron Iker's iconic Order Confirm animation.
+          </p>
+        </div>
+        <button type="button" class="close lg-truck-modal-close" data-dismiss="modal" aria-label="Close" onclick="closeTruckDemoModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body lg-truck-modal-body">
+        
+        <!-- Interactive Stage / Showcase Canvas -->
+        <div class="lg-truck-stage" id="truckStage">
+          <div class="lg-truck-stage-ambient"></div>
+          
+          <div class="lg-truck-stage-intro">
+            <span class="lg-stage-label">Interactive Playground</span>
+            <p>Click the button below to watch it open into a street and drive your parcel away:</p>
+          </div>
+
+          <!-- THE ANIMATED TRUCK BUTTON -->
+          <div class="lg-truck-btn-container">
+            <button class="truck-order-btn" id="truckOrderBtn" type="button" onclick="triggerTruckOrderAnimation()">
+              
+              <!-- Default State (Button Text) -->
+              <span class="btn-state-default">
+                <svg class="btn-icon-cart" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+                <span class="btn-text">Complete Order</span>
+              </span>
+
+              <!-- Street / Road Lines -->
+              <div class="btn-street">
+                <div class="road-markings"></div>
+              </div>
+
+              <!-- Falling Parcel Box -->
+              <div class="parcel-box" id="parcelBox">
+                <div class="parcel-face parcel-front">
+                  <span class="parcel-tape"></span>
+                  <span class="parcel-label"></span>
+                </div>
+              </div>
+
+              <!-- Animated Delivery Truck -->
+              <div class="delivery-truck" id="deliveryTruck">
+                <div class="truck-body">
+                  <!-- Cargo Bed -->
+                  <div class="truck-bed">
+                    <div class="bed-wall"></div>
+                    <div class="bed-groove"></div>
+                  </div>
+                  <!-- Cabin -->
+                  <div class="truck-cab">
+                    <div class="cab-window"></div>
+                    <div class="cab-headlight"></div>
+                    <div class="cab-bumper"></div>
+                  </div>
+                  <!-- Wheels -->
+                  <div class="truck-wheels">
+                    <div class="wheel wheel-front">
+                      <div class="wheel-rim"></div>
+                    </div>
+                    <div class="wheel wheel-back">
+                      <div class="wheel-rim"></div>
+                    </div>
+                  </div>
+                  <!-- Exhaust Pipe & Smoke -->
+                  <div class="truck-exhaust">
+                    <span class="smoke-puff p1"></span>
+                    <span class="smoke-puff p2"></span>
+                    <span class="smoke-puff p3"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Success State -->
+              <span class="btn-state-success">
+                <svg class="btn-icon-check" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span class="btn-text">Order Dispatched!</span>
+              </span>
+
+            </button>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="lg-truck-controls">
+            <button type="button" class="lg-truck-ctrl-btn" id="truckReplayBtn" onclick="resetTruckOrderAnimation()">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"/>
+              </svg>
+              Replay Animation
+            </button>
+            <button type="button" class="lg-truck-ctrl-btn" id="truckSpeedToggle" onclick="toggleTruckSpeed()">
+              <span id="speedIndicator">⚡ Normal Speed (1x)</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Video Analysis Card -->
+        <div class="lg-truck-analysis">
+          <div class="lg-analysis-header">
+            <span class="lg-analysis-icon">🎬</span>
+            <div>
+              <h5 class="lg-analysis-title">Reel Analysis & UX Engineering</h5>
+              <p class="lg-analysis-author">Instagram Video: <strong>@_code_and_chill_</strong> (Hasibul Hasan) | Concept: <strong>Aaron Iker</strong></p>
+            </div>
+          </div>
+
+          <div class="lg-analysis-grid">
+            <div class="lg-analysis-item">
+              <span class="lg-item-num">1</span>
+              <div>
+                <strong>Button-to-Street Morph</strong>
+                <p>The confirm button width expands into a miniature asphalt road with moving dashed lanes, transforming waiting into tangible motion.</p>
+              </div>
+            </div>
+
+            <div class="lg-analysis-item">
+              <span class="lg-item-num">2</span>
+              <div>
+                <strong>Parcel Loading Physics</strong>
+                <p>A parcel box animates from above with spring elastic bounce, landing precisely into the truck bed to confirm item handling.</p>
+              </div>
+            </div>
+
+            <div class="lg-analysis-item">
+              <span class="lg-item-num">3</span>
+              <div>
+                <strong>Exhaust & Drive-Off</strong>
+                <p>The truck revs up with spinning wheels and exhaust smoke puffs, accelerating off-screen to show immediate dispatch.</p>
+              </div>
+            </div>
+
+            <div class="lg-analysis-item">
+              <span class="lg-item-num">4</span>
+              <div>
+                <strong>Emotional Reward (Dopamine UX)</strong>
+                <p>Replaces cold loading spinners with a delightful storytelling moment, eliminating checkout anxiety and reducing perceived latency.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer lg-truck-modal-footer">
+        <span class="lg-footer-tip">💡 Tip: Try the slow-motion toggle to examine each frame of the parcel loading sequence!</span>
+        <button type="button" class="lg-btn-secondary" data-dismiss="modal" onclick="closeTruckDemoModal()">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>

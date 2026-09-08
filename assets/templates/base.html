@@ -52,6 +52,7 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-rs-food">
 					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a class="nav-link lg-demo-nav-link" href="javascript:void(0);" onclick="openTruckDemoModal()" title="View Interactive Delivery Animation"><span class="lg-truck-icon">🚚</span> Demo</a></li>
 						<li class="nav-item {% if request.resolver_match.url_name == 'index' or request.path == '/' %}active{% endif %}"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
 						<li class="nav-item {% if request.resolver_match.url_name == 'UserLogin' %}active{% endif %}"><a class="nav-link" href="{% url 'UserLogin' %}">User</a></li>
 						<li class="nav-item {% if request.resolver_match.url_name == 'AdminLogin' %}active{% endif %}"><a class="nav-link" href="{% url 'AdminLogin' %}">Admin</a></li>
@@ -99,5 +100,6 @@
 	<script src="{% static 'js/form-validator.min.js' %}"></script>
     <script src="{% static 'js/contact-form-script.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
+    {% include '_truck_demo_modal.html' %}
 </body>
 </html>
