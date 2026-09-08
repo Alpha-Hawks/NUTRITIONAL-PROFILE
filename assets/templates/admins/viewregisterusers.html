@@ -1,0 +1,112 @@
+{% extends 'admins/adminbase.html' %}
+{% load static %}
+{% block contents %}
+
+<section class="lg-scope">
+  {% include '_liquid_glass_backdrop.html' %}
+
+  <div class="lg-card lg-card--table" style="max-width: 1060px; width: 95%; margin: 40px auto 60px;">
+    <div class="lg-spec" aria-hidden="true"></div>
+
+    <div class="lg-inner">
+      <div class="lg-table-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 24px;">
+        <div>
+          <p class="lg-eyebrow" style="margin-bottom: 6px;">Administration Portal</p>
+          <h1 class="lg-title" style="margin-bottom: 6px; font-size: 28px;">Registered User Details</h1>
+          <p class="lg-sub" style="margin: 0;">Review registered user accounts and manage authentication & activation status.</p>
+        </div>
+        <div class="lg-user-count-badge">
+          <span class="lg-user-count-num">{{ data|length }}</span>
+          <span class="lg-user-count-label">Total Users</span>
+        </div>
+      </div>
+
+      {% if messages %}
+      {% for message in messages %}
+      <div class="{% if message.tags == 'error' %}lg-alert{% else %}lg-notice{% endif %}" role="alert" style="margin-bottom: 20px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 4.6v4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="8" cy="11.4" r=".95" fill="currentColor"/>
+        </svg>
+        <span>{{ message }}</span>
+      </div>
+      {% endfor %}
+      {% endif %}
+
+      <div class="lg-table-responsive-wrapper">
+        <table class="lg-glass-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">#</th>
+              <th>Full Name</th>
+              <th>Login ID</th>
+              <th>Contact</th>
+              <th>Locality</th>
+              <th>Status</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in data %}
+            <tr class="lg-table-row">
+              <td class="lg-td-num" style="font-weight: 700; color: var(--lg-ink-soft);">{{ forloop.counter }}</td>
+              <td class="lg-td-user">
+                <div class="lg-table-user-cell">
+                  <div class="lg-table-avatar">{{ user.name|slice:":1"|upper }}</div>
+                  <div class="lg-table-user-info">
+                    <span class="lg-user-name">{{ user.name }}</span>
+                    <span class="lg-user-email">{{ user.email }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="lg-td-loginid">
+                <span class="lg-loginid-pill">@{{ user.loginid }}</span>
+              </td>
+              <td class="lg-td-mobile">
+                <span style="font-family: ui-monospace, SFMono-Regular, monospace; font-size: 12.5px;">{{ user.mobile }}</span>
+              </td>
+              <td class="lg-td-locality">
+                <span>{{ user.locality|default:"—" }}</span>
+              </td>
+              <td class="lg-td-status">
+                {% if user.status == 'waiting' %}
+                <span class="lg-status-pill lg-status-pill--waiting">
+                  <span class="lg-status-dot"></span>Pending
+                </span>
+                {% else %}
+                <span class="lg-status-pill lg-status-pill--active">
+                  <span class="lg-status-dot"></span>Activated
+                </span>
+                {% endif %}
+              </td>
+              <td class="lg-td-action" style="text-align: right;">
+                {% if user.status == 'waiting' %}
+                <a href="{% url 'ActivaUsers' %}?uid={{ user.id }}" class="lg-btn-activate" title="Activate this user account">
+                  Activate
+                </a>
+                {% else %}
+                <span class="lg-badge-activated" title="Account is active">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Active
+                </span>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="7" class="lg-table-empty" style="text-align: center; padding: 40px 20px; color: var(--lg-ink-soft);">
+                No registered users found in the system.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

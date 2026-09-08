@@ -1,0 +1,113 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block contents%}
+
+<section class="lg-scope lg-scope--wide">
+  {% include '_liquid_glass_backdrop.html' %}
+
+  <div class="lg-card">
+    <div class="lg-spec" aria-hidden="true"></div>
+
+    <div class="lg-inner">
+      <p class="lg-eyebrow">Nutritional profile estimation</p>
+      <h1 class="lg-title">Create your account</h1>
+      <p class="lg-sub">Register once, then sign in to estimate the nutrition in any recipe.
+        An administrator activates new accounts before first use.</p>
+
+      <form action="{%url 'UserRegisterActions'%}" method="POST">
+        {% csrf_token %}
+
+        <div class="lg-grid">
+          <div class="lg-field">
+            <label class="lg-label" for="{{ form.name.id_for_label }}">Full name</label>
+            {{ form.name }}
+            {% if form.name.errors %}<ul class="lg-err">{% for e in form.name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+
+          <div class="lg-field">
+            <label class="lg-label" for="{{ form.loginid.id_for_label }}">Login ID</label>
+            {{ form.loginid }}
+            {% if form.loginid.errors %}<ul class="lg-err">{% for e in form.loginid.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+
+          <div class="lg-field">
+            <label class="lg-label" for="{{ form.password.id_for_label }}">Password</label>
+            <div class="lg-input-wrap lg-pw-wrap">
+              {{ form.password }}
+              <button class="lg-reveal" type="button"
+                      aria-controls="{{ form.password.id_for_label }}" aria-pressed="false">Show</button>
+            </div>
+            {% if form.password.errors %}<ul class="lg-err">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+
+          <div class="lg-field">
+            <label class="lg-label" for="{{ form.mobile.id_for_label }}">Mobile number</label>
+            {{ form.mobile }}
+            {% if form.mobile.errors %}<ul class="lg-err">{% for e in form.mobile.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+
+          <div class="lg-field">
+            <label class="lg-label" for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}<ul class="lg-err">{% for e in form.email.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+
+          <div class="lg-field">
+            <label class="lg-label" for="{{ form.locality.id_for_label }}">Locality</label>
+            {{ form.locality }}
+            {% if form.locality.errors %}<ul class="lg-err">{% for e in form.locality.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+
+          <div class="lg-field lg-span-2">
+            <label class="lg-label" for="{{ form.address.id_for_label }}">Address</label>
+            {{ form.address }}
+            {% if form.address.errors %}<ul class="lg-err">{% for e in form.address.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+
+          <div class="lg-field">
+            <label class="lg-label" for="{{ form.city.id_for_label }}">City</label>
+            {{ form.city }}
+            {% if form.city.errors %}<ul class="lg-err">{% for e in form.city.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+
+          <div class="lg-field">
+            <label class="lg-label" for="{{ form.state.id_for_label }}">State</label>
+            {{ form.state }}
+            {% if form.state.errors %}<ul class="lg-err">{% for e in form.state.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+        </div>
+
+        {{ form.status }}
+
+        <div class="lg-actions">
+          <button class="lg-btn lg-btn--primary" type="submit">Register</button>
+          <button class="lg-btn lg-btn--ghost" type="reset">Reset</button>
+        </div>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="{% if message.tags == 'error' %}lg-alert{% else %}lg-notice{% endif %}" role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+            {% if message.tags == 'error' %}
+            <path d="M8 4.6v4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="8" cy="11.4" r=".95" fill="currentColor"/>
+            {% else %}
+            <path d="M8 11.4V7.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="8" cy="4.6" r=".95" fill="currentColor"/>
+            {% endif %}
+          </svg>
+          <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </form>
+
+      <p class="lg-foot">
+        Already registered? <a href="{% url 'UserLogin' %}">Sign in here</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+{%endblock%}

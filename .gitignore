@@ -1,0 +1,23 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+.env
+.venv/
+venv/
+ENV/
+
+# Static collection for build
+staticfiles/
+
+# Large datasets exceeding GitHub 100MB limit
+media/*.csv
+media/Reviews.csv
+*.csv
+
+# IDE / Editor
+.vscode/
+.idea/
+.claude/
+.system_generated/

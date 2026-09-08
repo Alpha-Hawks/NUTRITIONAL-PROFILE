@@ -1,0 +1,151 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block contents %}
+
+<section class="lg-scope lg-scope--wide {% if recipes %}lg-scope--recipes{% endif %}">
+  {% include '_liquid_glass_backdrop.html' %}
+
+  <div class="lg-card">
+    <div class="lg-spec" aria-hidden="true"></div>
+
+    <div class="lg-inner">
+      <p class="lg-eyebrow">Recipe Finder</p>
+      <h1 class="lg-title">Find Recipes by Ingredients</h1>
+      <p class="lg-sub">Enter the ingredients you have on hand separated by commas to discover delicious dishes you can prepare.</p>
+
+      <form id="recipeFinderForm" action="{% url 'FindRecipe' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="lg-field">
+          <label class="lg-label" for="id_ingredients">Enter Ingredients</label>
+          <div class="lg-input-wrap">
+            <textarea id="id_ingredients" class="lg-input" name="ingredients" required rows="3"
+                      placeholder="e.g. apple, flour, ghee, sugar, cinnamon">{% if ingredients %}{{ ingredients }}{% endif %}</textarea>
+          </div>
+        </div>
+
+        <div class="lg-actions">
+          <button class="lg-btn lg-btn--primary" type="submit">Find Recipe</button>
+          <button class="lg-btn lg-btn--ghost" type="button" id="clearRecipeBtn">Clear</button>
+        </div>
+      </form>
+
+      {% if recipes %}
+      <div class="lg-recipe-result-wrapper" id="recipeResultContainer">
+        <div class="lg-results-header">
+          <span class="lg-badge">All Prepared Dishes</span>
+          <h2 class="lg-results-title">Dishes Prepared with {{ ingredients }}</h2>
+          <p class="lg-results-sub">Explore all delicious dishes prepared with your ingredients. Click below to watch video recipes in Telugu or English.</p>
+        </div>
+
+        <div class="lg-recipes-grid">
+          {% for recipe in recipes %}
+          <div class="lg-recipe-card">
+            <div class="lg-recipe-card-media">
+              {% if recipe.image %}
+              <img src="{{ recipe.image }}" alt="{{ recipe.title }}" class="lg-recipe-card-img" loading="lazy">
+              {% else %}
+              <div class="lg-recipe-card-placeholder">
+                <span>{{ recipe.title|slice:":1"|upper }}</span>
+              </div>
+              {% endif %}
+              <div class="lg-card-badges-left">
+                <span class="lg-card-badge-num">#{{ forloop.counter }}</span>
+                {% if recipe.is_popular %}
+                <span class="lg-pop-tag" title="{{ recipe.likes }} likes">★ Popular</span>
+                {% endif %}
+              </div>
+              {% if recipe.is_veg %}
+              <div class="lg-food-type lg-food-type--veg" title="Vegetarian Dish">
+                <span class="lg-food-symbol"></span>
+              </div>
+              {% else %}
+              <div class="lg-food-type lg-food-type--nonveg" title="Non-Vegetarian Dish">
+                <span class="lg-food-symbol"></span>
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="lg-recipe-card-content">
+              <h3 class="lg-recipe-card-title" title="{{ recipe.title }}">{{ recipe.title }}</h3>
+
+              <div class="lg-recipe-meta-row">
+                {% if recipe.used_ingredients %}
+                <span class="lg-ing-tag" title="Used ingredients: {{ recipe.used_ingredients|join:', ' }}">Uses: {{ recipe.used_ingredients|slice:":3"|join:", " }}</span>
+                {% else %}
+                <span class="lg-ing-tag">Uses: Key ingredient</span>
+                {% endif %}
+
+                {% if recipe.is_healthy %}
+                <span class="lg-health-badge lg-health-badge--healthy" title="Nutritious & healthy dish">
+                  <span class="lg-health-dot"></span>Healthy
+                </span>
+                {% else %}
+                <span class="lg-health-badge lg-health-badge--unhealthy" title="Indulgent or calorie-dense dish">
+                  <span class="lg-health-dot"></span>Not Healthy
+                </span>
+                {% endif %}
+              </div>
+
+              <div class="lg-recipe-video-actions">
+                <a href="{{ recipe.youtube_telugu }}" target="_blank" rel="noopener noreferrer" class="lg-yt-btn lg-yt-btn--telugu" title="Watch {{ recipe.title }} recipe in Telugu on YouTube">
+                  <svg class="lg-yt-icon" viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  <span>Telugu Video</span>
+                </a>
+                <a href="{{ recipe.youtube_english }}" target="_blank" rel="noopener noreferrer" class="lg-yt-btn lg-yt-btn--english" title="Watch {{ recipe.title }} recipe in English on YouTube">
+                  <svg class="lg-yt-icon" viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  <span>English Video</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% elif title or image %}
+      <div class="lg-recipe-result" id="recipeResultContainer">
+        <div class="lg-recipe-header">
+          <span class="lg-badge">Suggested Dish</span>
+          {% if title %}
+          <h2 class="lg-recipe-title">{{ title }}</h2>
+          {% endif %}
+        </div>
+        {% if image %}
+        <div class="lg-recipe-media">
+          <img src="{{ image }}" alt="{{ title|default:'Recipe image' }}" class="lg-recipe-img">
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    var clearBtn = document.getElementById('clearRecipeBtn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var textarea = document.getElementById('id_ingredients');
+        if (textarea) {
+          textarea.value = '';
+          textarea.focus();
+        }
+        var result = document.getElementById('recipeResultContainer');
+        if (result) {
+          result.remove();
+        }
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', '{% url "FindRecipe" %}');
+        }
+      });
+    }
+  })();
+</script>
+
+{% endblock %}

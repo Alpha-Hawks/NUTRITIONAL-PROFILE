@@ -1,0 +1,87 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block contents %}
+
+<section class="lg-scope lg-scope--wide lg-scope--nutrition">
+  {% include '_liquid_glass_backdrop.html' %}
+
+  <div class="lg-card">
+    <div class="lg-spec" aria-hidden="true"></div>
+
+    <div class="lg-inner">
+      <p class="lg-eyebrow">Nutritional Profile</p>
+      <h1 class="lg-title">Nutrition Estimation</h1>
+      <p class="lg-sub">Estimate the nutritional balance and identify beneficial nutrients versus those to monitor in your ingredients.</p>
+
+      <form id="nutritionForm" action="{% url 'Nutrition' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="lg-field">
+          <label class="lg-label" for="id_nutrition_ingredients">Enter Ingredients</label>
+          <div class="lg-input-wrap">
+            <textarea id="id_nutrition_ingredients" class="lg-input" name="ingredients" required rows="3"
+                      placeholder="e.g. apple, flour, ghee, sugar">{% if ingredients %}{{ ingredients }}{% endif %}</textarea>
+          </div>
+        </div>
+
+        <div class="lg-actions">
+          <button class="lg-btn lg-btn--primary" type="submit">Estimate Nutrition</button>
+          <button class="lg-btn lg-btn--ghost" type="button" id="clearNutritionBtn">Clear</button>
+        </div>
+      </form>
+
+      {% if bad_nutrient_html or good_nutrient_html %}
+      <div class="lg-nutrition-results" id="nutritionResultsContainer">
+        {% if bad_nutrient_html %}
+        <div class="lg-nutrient-card lg-nutrient-card--bad">
+          <div class="lg-nutrient-head">
+            <span class="lg-nutrient-tag lg-nutrient-tag--bad">Monitor</span>
+            <h3 class="lg-nutrient-title">Nutrients to Limit</h3>
+          </div>
+          <div class="lg-table-wrapper">
+            {{ bad_nutrient_html|safe }}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if good_nutrient_html %}
+        <div class="lg-nutrient-card lg-nutrient-card--good">
+          <div class="lg-nutrient-head">
+            <span class="lg-nutrient-tag lg-nutrient-tag--good">Beneficial</span>
+            <h3 class="lg-nutrient-title">Good Nutrients</h3>
+          </div>
+          <div class="lg-table-wrapper">
+            {{ good_nutrient_html|safe }}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    var clearBtn = document.getElementById('clearNutritionBtn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var textarea = document.getElementById('id_nutrition_ingredients');
+        if (textarea) {
+          textarea.value = '';
+          textarea.focus();
+        }
+        var results = document.getElementById('nutritionResultsContainer');
+        if (results) {
+          results.remove();
+        }
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', '{% url "Nutrition" %}');
+        }
+      });
+    }
+  })();
+</script>
+
+{% endblock %}

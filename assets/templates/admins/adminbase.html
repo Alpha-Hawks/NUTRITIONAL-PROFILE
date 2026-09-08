@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cooking Recipes — Administrator</title>
+
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+    <!-- Liquid glass: shared nav + auth surface -->
+    {% include '_liquid_glass_assets.html' %}
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #0c2027;
+        font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+        color: #16282e;
+        min-height: 100vh;
+      }
+      .top-navbar .navbar-brand {
+        font-family: 'Fraunces', Georgia, serif;
+        font-weight: 700;
+        font-size: 20px;
+        color: #16282e;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .lg-admin-tag {
+        font-size: 11px;
+        font-family: 'Inter Tight', system-ui, sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        background: rgba(214,64,44,0.14);
+        color: #b71c1c;
+        border: 1px solid rgba(214,64,44,0.30);
+        padding: 2px 8px;
+        border-radius: 999px;
+      }
+      .top-navbar .navbar-nav .nav-link {
+        font-size: 14.5px;
+        font-weight: 600;
+        color: var(--lg-ink);
+        padding: 8px 16px !important;
+        border-radius: 999px;
+        transition: all 0.2s ease;
+      }
+      .top-navbar .navbar-nav .nav-item.active .nav-link,
+      .top-navbar .navbar-nav .nav-link:hover {
+        background: rgba(255,255,255,0.70);
+        color: #16282e;
+        box-shadow: 0 4px 12px rgba(9,32,40,0.08);
+      }
+      .lg-nav-logout {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        color: #943214 !important;
+        background: linear-gradient(160deg, rgba(255,238,232,0.85), rgba(255,222,212,0.60)) !important;
+        border: 1px solid rgba(214,64,44,0.35) !important;
+        box-shadow: 0 3px 10px rgba(168,46,24,0.14), inset 0 1px 0 rgba(255,255,255,0.90) !important;
+      }
+      .lg-nav-logout:hover {
+        background: linear-gradient(160deg, rgba(255,238,232,0.98), rgba(255,222,212,0.80)) !important;
+        border-color: rgba(214,64,44,0.55) !important;
+        color: #7a250d !important;
+        transform: translateY(-1px);
+      }
+    </style>
+</head>
+
+<body>
+	<!-- Start header -->
+	<header class="top-navbar">
+		<nav class="navbar navbar-expand-lg navbar-light">
+			<div class="container">
+				<a class="navbar-brand" href="{% url 'RegisterUsersView' %}">
+					<span>Cooking Recipes</span>
+					<span class="lg-admin-tag">Admin</span>
+				</a>
+				<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbars-rs-food" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+				  <span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbars-rs-food">
+					<ul class="navbar-nav ml-auto align-items-center">
+						<!-- HOME BUTTON REMOVED as requested -->
+						<li class="nav-item {% if request.resolver_match.url_name == 'RegisterUsersView' %}active{% endif %}">
+							<a class="nav-link" href="{% url 'RegisterUsersView' %}">UserDetails</a>
+						</li>
+						<li class="nav-item {% if request.resolver_match.url_name == 'AdminResults' %}active{% endif %}">
+							<a class="nav-link" href="{% url 'AdminResults' %}">Results</a>
+						</li>
+						<li class="nav-item ml-lg-2">
+							<a class="nav-link lg-nav-logout" href="{% url 'index' %}" title="Log out of Admin Portal">
+								<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+									<polyline points="16 17 21 12 16 7"></polyline>
+									<line x1="21" y1="12" x2="9" y2="12"></line>
+								</svg>
+								Logout
+							</a>
+						</li>
+
+						<!-- Admin badge avatar right of logout -->
+						<li class="nav-item ml-lg-3 my-2 my-lg-0 lg-profile-item">
+							<div class="lg-profile-circle-btn" title="Logged in as Administrator" style="cursor:default;">
+								<span class="lg-profile-circle-avatar" style="background:linear-gradient(145deg, #d6402c 0%, #a82e18 55%, #7a1d0a 100%) !important; color:#fff !important; font-weight:700; font-family:'Fraunces',Georgia,serif; font-size:16px;">A</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<!-- End header -->
+
+	{% block contents %}
+	{% endblock %}
+
+	<!-- Scripts -->
+	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+	<script src="{% static 'js/popper.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

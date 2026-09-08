@@ -1,0 +1,24 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block contents %}
+
+<section class="lg-scope">
+  {% include '_liquid_glass_backdrop.html' %}
+
+  <div class="lg-card">
+    <div class="lg-spec" aria-hidden="true"></div>
+
+    <div class="lg-inner">
+      <p class="lg-eyebrow">Nutritional Profile Estimation</p>
+      <h1 class="lg-title">Welcome Back</h1>
+      <p class="lg-sub">Explore delicious recipes tailored to your ingredients and check their nutritional estimation.</p>
+
+      <div class="lg-actions">
+        <a href="{% url 'FindRecipe' %}" class="lg-btn lg-btn--primary" style="display:flex;align-items:center;justify-content:center;text-decoration:none;">Find Recipes</a>
+        <a href="{% url 'Nutrition' %}" class="lg-btn lg-btn--ghost" style="display:flex;align-items:center;justify-content:center;text-decoration:none;">Estimate Nutrition</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

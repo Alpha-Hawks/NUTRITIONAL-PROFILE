@@ -1,0 +1,64 @@
+{% extends 'admins/adminbase.html' %}
+{% load static %}
+{% block contents %}
+
+<section class="lg-scope">
+  {% include '_liquid_glass_backdrop.html' %}
+
+  <div class="lg-card" style="max-width: 540px; margin: 40px auto 60px;">
+    <div class="lg-spec" aria-hidden="true"></div>
+
+    <div class="lg-inner" style="text-align: center;">
+      <div class="lg-welcome-icon" style="margin: 0 auto 18px; width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(145deg, #d6402c, #a82e18); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px -4px rgba(214,64,44,0.40); color: #fff;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+
+      <p class="lg-eyebrow">Nutritional Profile Estimation</p>
+      <h1 class="lg-title" style="margin-bottom: 8px;">Welcome, Admin!</h1>
+      <p class="lg-sub" style="margin-bottom: 24px;">Welcome to the Administrative Portal. Review user registrations, verify credentials, and manage account activation status.</p>
+
+      <div class="lg-actions" style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 10px;">
+        <a href="{% url 'RegisterUsersView' %}" class="lg-btn lg-btn--primary" style="text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <span>Open User Details</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <div class="lg-redirect-hint" style="margin-top: 20px; font-size: 12.5px; color: var(--lg-ink-soft); display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <svg class="lg-spinner" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: lgSpin 1s linear infinite;">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+        </svg>
+        <span>Opening user details in <strong id="redirectCountdown" style="color: var(--lg-ink);">2</strong>s...</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes lgSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script>
+  (function() {
+    var count = 2;
+    var el = document.getElementById('redirectCountdown');
+    var timer = setInterval(function() {
+      count--;
+      if (el) el.textContent = count;
+      if (count <= 0) {
+        clearInterval(timer);
+        window.location.href = "{% url 'RegisterUsersView' %}";
+      }
+    }, 1000);
+  })();
+</script>
+
+{% endblock %}

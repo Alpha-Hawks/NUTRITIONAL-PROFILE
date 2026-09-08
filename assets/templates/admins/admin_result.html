@@ -1,0 +1,58 @@
+{% extends 'admins/adminbase.html' %}
+{% load static %}
+{% block contents %}
+
+<section class="lg-scope">
+  {% include '_liquid_glass_backdrop.html' %}
+
+  <div class="lg-card lg-card--table" style="max-width: 860px; margin: 40px auto 60px;">
+    <div class="lg-spec" aria-hidden="true"></div>
+
+    <div class="lg-inner">
+      <p class="lg-eyebrow">Performance Metrics</p>
+      <h1 class="lg-title">Machine Learning Classification Results</h1>
+      <p class="lg-sub" style="margin-bottom: 24px;">Comparative accuracy and F1-scores across multiple culinary classification models.</p>
+
+      <div class="lg-table-responsive-wrapper">
+        <table class="lg-glass-table">
+          <thead>
+            <tr>
+              <th style="width: 60px;">#</th>
+              <th>Algorithm</th>
+              <th>Accuracy</th>
+              <th>F1-Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 700; color: var(--lg-ink-soft);">1</td>
+              <td style="font-weight: 600;">Naive Bayes</td>
+              <td><span class="lg-status-pill lg-status-pill--active">{{ nb.accuracy }}</span></td>
+              <td><span class="lg-loginid-pill">{{ nb.f1_score }}</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: var(--lg-ink-soft);">2</td>
+              <td style="font-weight: 600;">Logistic Regression</td>
+              <td><span class="lg-status-pill lg-status-pill--active">{{ lg.lg_accuracy }}</span></td>
+              <td><span class="lg-loginid-pill">{{ lg.lg_f1_score }}</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: var(--lg-ink-soft);">3</td>
+              <td style="font-weight: 600;">Support Vector Machine</td>
+              <td><span class="lg-status-pill lg-status-pill--active">{{ svm.svm_accuracy }}</span></td>
+              <td><span class="lg-loginid-pill">{{ svm.svm_accuracy }}</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: var(--lg-ink-soft);">4</td>
+              <td style="font-weight: 600;">Random Forest</td>
+              <td><span class="lg-status-pill lg-status-pill--active">{{ rf.rf_accuracy }}</span></td>
+              <td><span class="lg-loginid-pill">{{ rf.rf_f1_score }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
